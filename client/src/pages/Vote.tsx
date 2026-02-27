@@ -2,7 +2,7 @@ import { useMatchup } from "@/hooks/use-attractions";
 import { useVote } from "@/hooks/use-votes";
 import { RecentMatches } from "@/components/RecentMatches";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Users, Info, Loader2 } from "lucide-react";
+import { MapPin, Users, Loader2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useState } from "react";
 
@@ -130,11 +130,6 @@ export default function Vote() {
 
                           {/* Description & Action */}
                           <div className="relative z-10 p-6 md:p-8 flex flex-col flex-1 bg-gradient-to-b from-transparent to-black/20">
-                            <p className="text-white/70 leading-relaxed mb-8 flex-1 line-clamp-4">
-                              <Info className="w-4 h-4 inline mr-2 text-white/40 mb-1" />
-                              {attraction.description}
-                            </p>
-                            
                             <button
                               onClick={(e) => handleVote(attraction.id, opponent.id, e)}
                               disabled={isPending}
