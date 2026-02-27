@@ -22,7 +22,6 @@ export default function Leaderboard() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-      
       {/* Header */}
       <div className="mb-12 text-center">
         <motion.div 
@@ -39,7 +38,6 @@ export default function Leaderboard() {
           The definitive tier list of world wonders, determined entirely by your head-to-head votes using the ELO rating system.
         </p>
       </div>
-
       {/* Controls */}
       <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 rounded-3xl border border-white/5 shadow-xl">
         <div className="relative w-full sm:max-w-xs">
@@ -57,7 +55,6 @@ export default function Leaderboard() {
           <span className="flex items-center gap-2"><Swords className="w-4 h-4" /> Matches</span>
         </div>
       </div>
-
       {/* Leaderboard List */}
       <div className="space-y-4">
         {isLoading ? (
@@ -86,13 +83,9 @@ export default function Leaderboard() {
                 `}
               >
                 {/* Rank Number */}
-                <div className={`
-                  w-12 sm:w-16 text-center font-display font-black text-3xl sm:text-5xl tracking-tighter
-                  ${style.color} drop-shadow-md
-                `}>
+                <div className="w-12 sm:w-16 text-center font-display font-black sm:text-5xl tracking-tighter text-white/40 drop-shadow-md text-[32px]">
                   #{index + 1}
                 </div>
-
                 {/* Image */}
                 <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 relative group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-shadow">
                   <img 
@@ -104,7 +97,6 @@ export default function Leaderboard() {
                     <div className="absolute inset-0 border-2 rounded-2xl border-white/30" />
                   )}
                 </div>
-
                 {/* Details */}
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xl sm:text-2xl font-bold text-white font-display truncate mb-1">
@@ -114,7 +106,6 @@ export default function Leaderboard() {
                     <MapPin className="w-3.5 h-3.5" /> {attraction.location}
                   </p>
                 </div>
-
                 {/* Stats */}
                 <div className="flex flex-col items-end gap-1 pr-2 sm:pr-4">
                   <div className="flex items-baseline gap-1.5">
@@ -127,7 +118,6 @@ export default function Leaderboard() {
                     {attraction.matchesPlayed} <span className="hidden sm:inline">Matches</span>
                   </div>
                 </div>
-
               </motion.div>
             );
           })
