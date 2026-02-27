@@ -101,16 +101,17 @@ export default function Vote() {
                           transition-all duration-500
                         `}>
                           
-                          {/* Image Container */}
-                          <div className="relative h-64 md:h-80 w-full overflow-hidden">
-                            <img 
-                              src={attraction.imageUrl} 
-                              alt={attraction.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
+                          {/* Background Image */}
+                          <img
+                            src={attraction.imageUrl}
+                            alt={attraction.name}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          />
+
+                          {/* Content & Action */}
+                          <div className="relative z-10 h-64 md:h-80 w-full flex flex-col justify-end px-6 pb-6">
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-                            
-                            <div className="absolute bottom-6 left-6 right-6">
+                            <div className="relative">
                               <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-2 leading-tight drop-shadow-md">
                                 {attraction.name}
                               </h2>
@@ -127,8 +128,8 @@ export default function Vote() {
                             </div>
                           </div>
 
-                          {/* Content & Action */}
-                          <div className="p-6 md:p-8 flex flex-col flex-1 bg-gradient-to-b from-transparent to-black/20">
+                          {/* Description & Action */}
+                          <div className="relative z-10 p-6 md:p-8 flex flex-col flex-1 bg-gradient-to-b from-transparent to-black/20">
                             <p className="text-white/70 leading-relaxed mb-8 flex-1 line-clamp-4">
                               <Info className="w-4 h-4 inline mr-2 text-white/40 mb-1" />
                               {attraction.description}
