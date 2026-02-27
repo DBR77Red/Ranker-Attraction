@@ -2,7 +2,7 @@ import { useMatchup } from "@/hooks/use-attractions";
 import { useVote } from "@/hooks/use-votes";
 import { RecentMatches } from "@/components/RecentMatches";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Users, Info, Loader2 } from "lucide-react";
+import { MapPin, Users, Loader2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useState } from "react";
 
@@ -101,20 +101,20 @@ export default function Vote() {
                           transition-all duration-500
                         `}>
                           
-                          {/* Image Container */}
-                          <div className="relative h-64 md:h-80 w-full overflow-hidden">
-                            <img 
-                              src={attraction.imageUrl} 
+                          {/* Single container: image as background, content on top */}
+                          <div className="relative flex-1 flex flex-col justify-between p-6 md:p-8">
+                            <img
+                              src={attraction.imageUrl}
                               alt={attraction.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-                            
-                            <div className="absolute bottom-6 left-6 right-6">
+
+                            <div className="relative z-10 mt-auto">
                               <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-2 leading-tight drop-shadow-md">
                                 {attraction.name}
                               </h2>
-                              <div className="flex flex-wrap gap-3">
+                              <div className="flex flex-wrap gap-3 mb-6">
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sm font-medium text-white/90 border border-white/10">
                                   <MapPin className="w-3.5 h-3.5 text-secondary" />
                                   {attraction.location}
@@ -124,32 +124,24 @@ export default function Vote() {
                                   {attraction.visitorCount}
                                 </span>
                               </div>
-                            </div>
-                          </div>
 
-                          {/* Content & Action */}
-                          <div className="p-6 md:p-8 flex flex-col flex-1 bg-gradient-to-b from-transparent to-black/20">
-                            <p className="text-white/70 leading-relaxed mb-8 flex-1 line-clamp-4">
-                              <Info className="w-4 h-4 inline mr-2 text-white/40 mb-1" />
-                              {attraction.description}
-                            </p>
-                            
-                            <button
-                              onClick={(e) => handleVote(attraction.id, opponent.id, e)}
-                              disabled={isPending}
-                              className="
-                                relative w-full py-5 rounded-2xl font-display font-bold text-xl overflow-hidden
-                                bg-white/5 border border-white/10 text-white
-                                hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]
-                                active:scale-[0.98] transition-all duration-300 group/btn
-                                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
-                              "
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
-                              <span className="relative z-10 flex items-center justify-center gap-2">
-                                {isPending ? (isClicked ? 'Voted!' : 'Voting...') : 'Vote for this'}
-                              </span>
-                            </button>
+                              <button
+                                onClick={(e) => handleVote(attraction.id, opponent.id, e)}
+                                disabled={isPending}
+                                className="
+                                  relative w-full py-5 rounded-2xl font-display font-bold text-xl overflow-hidden
+                                  bg-white/5 border border-white/10 text-white
+                                  hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]
+                                  active:scale-[0.98] transition-all duration-300 group/btn
+                                  disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+                                "
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                                <span className="relative z-10 flex items-center justify-center gap-2">
+                                  {isPending ? (isClicked ? 'Voted!' : 'Voting...') : 'Vote for this'}
+                                </span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
