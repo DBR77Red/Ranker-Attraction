@@ -23,21 +23,21 @@ export default function Leaderboard() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
       {/* Header */}
-      <div className="mb-12 text-center">
-        <motion.div 
+      <div className="mb-6 md:mb-12 text-center">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center justify-center p-3 rounded-2xl bg-white/5 border border-white/10 mb-6"
+          className="inline-flex flex-wrap items-center justify-center p-3 rounded-2xl bg-white/5 border border-white/10 mb-4 md:mb-6 gap-2"
         >
-          <Trophy className="w-8 h-8 text-accent mr-3" />
-          <h1 className="text-3xl md:text-5xl font-display font-black text-white">
+          <Trophy className="w-6 h-6 md:w-8 md:h-8 text-accent" />
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-display font-black text-white">
             Global <span className="text-gradient">Rankings</span>
           </h1>
         </motion.div>
-        <p className="text-lg text-white/60 max-w-2xl mx-auto">
+        <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto">
           The definitive tier list of world wonders, determined entirely by your head-to-head votes using the ELO rating system.
         </p>
-        <p className="text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
+        <p className="text-xs sm:text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
       </div>
       {/* Controls */}
       <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 rounded-3xl border border-white/5 shadow-xl">
@@ -88,7 +88,7 @@ export default function Leaderboard() {
                   #{index + 1}
                 </div>
                 {/* Image */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden flex-shrink-0 relative group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-shadow">
+                <div className="w-14 h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden flex-shrink-0 relative group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-shadow">
                   <img 
                     src={attraction.imageUrl} 
                     alt={attraction.name}
@@ -100,7 +100,7 @@ export default function Leaderboard() {
                 </div>
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white font-display mb-1">
+                  <h3 className="text-base sm:text-xl md:text-2xl font-bold text-white font-display mb-1">
                     {attraction.name}
                   </h3>
                   <p className="text-white/60 text-sm flex items-center gap-1.5 truncate">
@@ -110,7 +110,7 @@ export default function Leaderboard() {
                 {/* Stats */}
                 <div className="flex flex-col items-end gap-1 pr-2 sm:pr-4">
                   <div className="flex items-baseline gap-1.5">
-                    <span className={`font-display font-bold text-2xl sm:text-3xl leading-none ${isTop3 ? 'text-white' : 'text-white/80'}`}>
+                    <span className={`font-display font-bold text-lg sm:text-2xl md:text-3xl leading-none ${isTop3 ? 'text-white' : 'text-white/80'}`}>
                       {attraction.eloScore}
                     </span>
                     <span className="text-xs font-bold uppercase tracking-wider text-white/40 hidden sm:inline">ELO</span>
