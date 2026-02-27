@@ -105,7 +105,7 @@ export default function Vote() {
                         `}>
                           
                           {/* Single container: image as background, content on top */}
-                          <div className="relative flex-1 flex flex-col justify-between p-4 md:p-8 min-h-[340px] sm:min-h-[440px] md:min-h-[800px]">
+                          <div className="relative flex-1 flex flex-col justify-between p-4 md:p-8 min-h-[227px] sm:min-h-[293px] md:min-h-[533px]">
                             <img
                               src={attraction.imageUrl}
                               alt={attraction.name}
