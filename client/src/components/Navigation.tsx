@@ -13,31 +13,31 @@ export function Navigation() {
   return (
     <nav className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-background/60 border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex-shrink-0 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
-              <Globe className="w-6 h-6 text-white" />
+        <div className="flex items-center justify-between h-14 sm:h-20">
+          <div className="flex-shrink-0 flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/20">
+              <Globe className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
             </div>
-            <span className="font-display font-black text-2xl tracking-tight text-white">
+            <span className="font-display font-black text-lg sm:text-2xl tracking-tight text-white">
               Wonders<span className="text-gradient">Rank</span>
             </span>
           </div>
-          
-          <div className="flex items-center gap-2 sm:gap-6">
+
+          <div className="flex items-center gap-1 sm:gap-6">
             {links.map((link) => {
               const isActive = location === link.href;
               const Icon = link.icon;
               return (
-                <Link 
-                  key={link.href} 
+                <Link
+                  key={link.href}
                   href={link.href}
                   className={`
-                    relative px-4 py-2 rounded-full font-medium text-sm sm:text-base flex items-center gap-2
+                    relative px-3 py-2 sm:px-4 sm:py-2 rounded-full font-medium text-sm sm:text-base flex items-center gap-2
                     transition-colors duration-300
                     ${isActive ? "text-white" : "text-white/60 hover:text-white hover:bg-white/5"}
                   `}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-primary" : ""}`} />
+                  <Icon className={`w-5 h-5 sm:w-4 sm:h-4 ${isActive ? "text-primary" : ""}`} />
                   <span className="hidden sm:inline">{link.label}</span>
                   {isActive && (
                     <motion.div
