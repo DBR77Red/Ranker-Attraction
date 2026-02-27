@@ -100,7 +100,7 @@ export default function Leaderboard() {
                 </div>
                 {/* Details */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white font-display truncate mb-1">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white font-display mb-1">
                     {attraction.name}
                   </h3>
                   <p className="text-white/60 text-sm flex items-center gap-1.5 truncate">
