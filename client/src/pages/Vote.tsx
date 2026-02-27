@@ -40,17 +40,17 @@ export default function Vote() {
         
         {/* Main Voting Arena */}
         <div className="lg:col-span-8 flex flex-col items-center">
-          <div className="mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-display font-black text-white mb-4">
+          <div className="mb-6 md:mb-10 text-center">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-white mb-3 md:mb-4">
               Which is more <span className="text-gradient">Breathtaking?</span>
             </h1>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-lg text-white/60 max-w-2xl mx-auto">
               Cast your vote and help us rank the wonders of the world. Your choice impacts the global ELO ranking.
             </p>
-            <p className="text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
+            <p className="text-xs sm:text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
           </div>
 
-          <div className="relative w-full max-w-4xl mx-auto min-h-[600px] flex items-center justify-center">
+          <div className="relative w-full max-w-4xl mx-auto flex items-center justify-center">
             <AnimatePresence mode="wait">
               {isLoading ? (
                 <motion.div 
@@ -79,12 +79,15 @@ export default function Vote() {
                   transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 >
                   
-                  {/* VS Badge (Desktop: center, Mobile: between) */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 
+                  {/* VS Badge — centered on desktop, inline on mobile */}
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20
                     w-16 h-16 rounded-full bg-background border-[4px] border-card flex items-center justify-center
                     shadow-[0_0_30px_rgba(30,10,60,1)] font-display font-black text-2xl italic text-white
                     hidden md:flex">
                     VS
+                  </div>
+                  <div className="md:hidden flex items-center justify-center py-2 order-1 w-full">
+                    <span className="font-display font-black text-xl italic text-white/60">VS</span>
                   </div>
 
                   {matchup.map((attraction, idx) => {
@@ -93,7 +96,7 @@ export default function Vote() {
                     const isPending = voteMutation.isPending;
 
                     return (
-                      <div key={attraction.id} className="flex-1 w-full flex flex-col">
+                      <div key={attraction.id} className={`flex-1 w-full flex flex-col ${idx === 0 ? 'order-0' : 'order-2'}`}>
                         <div className={`
                           relative group flex-1 glass-panel rounded-[2rem] overflow-hidden flex flex-col
                           ${isPending && !isClicked ? 'opacity-50 scale-95 grayscale-[50%]' : ''}
@@ -102,7 +105,7 @@ export default function Vote() {
                         `}>
                           
                           {/* Single container: image as background, content on top */}
-                          <div className="relative flex-1 flex flex-col justify-between p-6 md:p-8 min-h-[640px] md:min-h-[800px]">
+                          <div className="relative flex-1 flex flex-col justify-between p-4 md:p-8 min-h-[340px] sm:min-h-[440px] md:min-h-[800px]">
                             <img
                               src={attraction.imageUrl}
                               alt={attraction.name}
@@ -111,7 +114,7 @@ export default function Vote() {
                             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
 
                             <div className="relative z-10 mt-auto">
-                              <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-2 leading-tight drop-shadow-md">
+                              <h2 className="font-display font-bold text-xl sm:text-3xl md:text-4xl text-white mb-2 leading-tight drop-shadow-md">
                                 {attraction.name}
                               </h2>
                               <div className="flex flex-wrap gap-3 mb-6">
@@ -129,7 +132,7 @@ export default function Vote() {
                                 onClick={(e) => handleVote(attraction.id, opponent.id, e)}
                                 disabled={isPending}
                                 className="
-                                  relative w-full py-5 rounded-2xl font-display font-bold text-xl overflow-hidden
+                                  relative w-full py-3 md:py-5 rounded-2xl font-display font-bold text-base md:text-xl overflow-hidden
                                   bg-white/5 border border-white/10 text-white
                                   hover:bg-white/10 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]
                                   active:scale-[0.98] transition-all duration-300 group/btn
@@ -154,7 +157,7 @@ export default function Vote() {
         </div>
 
         {/* Side Panel: Recent Matches */}
-        <div className="lg:col-span-4 h-[600px] lg:h-auto lg:sticky lg:top-28">
+        <div className="lg:col-span-4 h-[400px] sm:h-[500px] lg:h-auto lg:sticky lg:top-28">
           <RecentMatches />
         </div>
       </div>
