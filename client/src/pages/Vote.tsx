@@ -47,6 +47,7 @@ export default function Vote() {
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
               Cast your vote and help us rank the wonders of the world. Your choice impacts the global ELO ranking.
             </p>
+            <p className="text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
           </div>
 
           <div className="relative w-full max-w-4xl mx-auto min-h-[600px] flex items-center justify-center">
