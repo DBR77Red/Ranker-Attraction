@@ -84,7 +84,7 @@ export default function Leaderboard() {
                 `}
               >
                 {/* Rank Number */}
-                <div className="w-12 sm:w-16 text-center font-display font-black sm:text-[32px] tracking-tighter text-white/40 drop-shadow-md text-[32px]">
+                <div className="w-12 sm:w-16 text-center font-display font-black sm:text-[32px] tracking-tighter text-white/40 drop-shadow-md text-[21px]">
                   #{index + 1}
                 </div>
                 {/* Image */}
