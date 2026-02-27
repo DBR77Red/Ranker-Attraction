@@ -37,6 +37,7 @@ export default function Leaderboard() {
         <p className="text-lg text-white/60 max-w-2xl mx-auto">
           The definitive tier list of world wonders, determined entirely by your head-to-head votes using the ELO rating system.
         </p>
+        <p className="text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
       </div>
       {/* Controls */}
       <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 rounded-3xl border border-white/5 shadow-xl">
