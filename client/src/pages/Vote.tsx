@@ -2,7 +2,7 @@ import { useMatchup } from "@/hooks/use-attractions";
 import { useVote } from "@/hooks/use-votes";
 import { RecentMatches } from "@/components/RecentMatches";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { MapPin, Users, Info, Loader2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useState } from "react";
 
@@ -102,16 +102,38 @@ export default function Vote() {
                         `}>
                           
                           {/* Image Container */}
-                          <div className="relative flex-1 w-full overflow-hidden">
-                            <img
-                              src={attraction.imageUrl}
+                          <div className="relative h-64 md:h-80 w-full overflow-hidden">
+                            <img 
+                              src={attraction.imageUrl} 
                               alt={attraction.name}
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+                            
+                            <div className="absolute bottom-6 left-6 right-6">
+                              <h2 className="font-display font-bold text-3xl md:text-4xl text-white mb-2 leading-tight drop-shadow-md">
+                                {attraction.name}
+                              </h2>
+                              <div className="flex flex-wrap gap-3">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sm font-medium text-white/90 border border-white/10">
+                                  <MapPin className="w-3.5 h-3.5 text-secondary" />
+                                  {attraction.location}
+                                </span>
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-sm font-medium text-white/90 border border-white/10">
+                                  <Users className="w-3.5 h-3.5 text-accent" />
+                                  {attraction.visitorCount}
+                                </span>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Action */}
-                          <div className="p-4 md:p-6">
+                          {/* Content & Action */}
+                          <div className="p-6 md:p-8 flex flex-col flex-1 bg-gradient-to-b from-transparent to-black/20">
+                            <p className="text-white/70 leading-relaxed mb-8 flex-1 line-clamp-4">
+                              <Info className="w-4 h-4 inline mr-2 text-white/40 mb-1" />
+                              {attraction.description}
+                            </p>
+                            
                             <button
                               onClick={(e) => handleVote(attraction.id, opponent.id, e)}
                               disabled={isPending}
