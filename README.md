@@ -2,8 +2,11 @@
 
 <img width="1396" height="864" alt="image" src="https://github.com/user-attachments/assets/f387374c-e419-46b3-8784-2f26076588e5" />
 
+/*
 
-> **This is a learning project only.** It was built to practice full-stack development and is not intended for production use.
+Disclaimer: This project was built as a learning exercise using Replit and Claude Code. It is intended for training and educational purposes only. Use at your own risk — I take no responsibility for any issues, damages, or losses that may arise from using this code in any environment.
+
+*/
 
 A head-to-head attraction ranking app where users vote between two tourist attractions and the results drive a global ELO leaderboard. Designed to be fully mobile friendly and responsive across all screen sizes.
 
