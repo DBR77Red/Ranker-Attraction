@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { attractions, matches, type InsertAttraction, type InsertMatch, type Attraction, type Match } from "@shared/schema";
+import { attractions, matches, type InsertAttraction, type InsertMatch, type Attraction, type Match } from "../shared/schema";
 import { eq, desc, sql } from "drizzle-orm";
 
 export interface IStorage {
