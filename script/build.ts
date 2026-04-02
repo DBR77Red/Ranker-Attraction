@@ -72,10 +72,36 @@ async function buildAll() {
     platform: "node",
     bundle: true,
     format: "cjs",
-    outfile: `${funcDir}/index.js`,
+    outfile: `${funcDir}/handler.js`,
     external: ["pg-native"], // optional native module, pg falls back gracefully
     logLevel: "info",
   });
+
+  // Diagnostic wrapper — catches and logs the full error if handler.js fails to load
+  await writeFile(
+    `${funcDir}/index.js`,
+    `"use strict";
+var handler, loadError;
+try {
+  handler = require("./handler.js");
+} catch (e) {
+  loadError = e;
+  console.error("HANDLER_LOAD_ERROR", JSON.stringify({
+    code: e.code,
+    message: e.message,
+    stack: (e.stack || "").slice(0, 2000)
+  }));
+}
+if (loadError) {
+  module.exports = function(req, res) {
+    res.writeHead(500, { "content-type": "application/json" });
+    res.end(JSON.stringify({ code: loadError.code, message: loadError.message }));
+  };
+} else {
+  module.exports = handler.default || handler;
+}
+`
+  );
 
   // Force CJS resolution (package.json root has "type": "module")
   await writeFile(
