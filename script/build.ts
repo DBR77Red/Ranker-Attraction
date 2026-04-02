@@ -64,13 +64,17 @@ async function buildAll() {
   // Bundle server/api.ts → api/index.js with ALL deps inlined.
   // Vercel's @vercel/node builder picks up api/index.js as a serverless function.
   // Since everything is inlined, nft tracing has nothing external to resolve.
+  // Must use ESM format because package.json has "type": "module".
   await esbuild({
     entryPoints: ["server/api.ts"],
     platform: "node",
     bundle: true,
-    format: "cjs",
+    format: "esm",
     outfile: "api/index.js",
     external: ["pg-native"],
+    banner: {
+      js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
+    },
     logLevel: "info",
   });
 }
