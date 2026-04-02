@@ -1,6 +1,6 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile, mkdir, writeFile, cp } from "fs/promises";
+import { rm, readFile } from "fs/promises";
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -34,7 +34,6 @@ const allowlist = [
 
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
-  await rm(".vercel/output", { recursive: true, force: true });
 
   console.log("building client...");
   await viteBuild();
@@ -62,50 +61,18 @@ async function buildAll() {
   });
 
   console.log("building vercel function...");
-  const funcDir = ".vercel/output/functions/api/index.func";
-  await mkdir(funcDir, { recursive: true });
-
-  // Bundle api/index.ts with all deps inlined — avoids Vercel's nft tracer
-  // missing files from drizzle-orm's complex subpath exports
+  // Bundle server/api.ts → api/index.js with ALL deps inlined.
+  // Vercel's @vercel/node builder picks up api/index.js as a serverless function.
+  // Since everything is inlined, nft tracing has nothing external to resolve.
   await esbuild({
-    entryPoints: ["api/index.ts"],
+    entryPoints: ["server/api.ts"],
     platform: "node",
     bundle: true,
-    format: "esm",
-    outfile: `${funcDir}/index.mjs`,
-    external: ["pg-native"], // optional native module, pg falls back gracefully
-    banner: {
-      // createRequire shim so any residual CJS patterns (pg-native try/catch) work
-      js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
-    },
+    format: "cjs",
+    outfile: "api/index.js",
+    external: ["pg-native"],
     logLevel: "info",
   });
-
-  // Include attached_assets so seedDatabase() can read the markdown file
-  await cp("attached_assets", `${funcDir}/attached_assets`, { recursive: true });
-
-  await writeFile(
-    `${funcDir}/.vc-config.json`,
-    JSON.stringify({
-      runtime: "nodejs22.x",
-      handler: "index.mjs",
-    })
-  );
-
-  console.log("assembling vercel output...");
-  await cp("dist/public", ".vercel/output/static", { recursive: true });
-
-  await writeFile(
-    ".vercel/output/config.json",
-    JSON.stringify({
-      version: 3,
-      routes: [
-        { src: "/api/(.*)", dest: "/api/index" },
-        { handle: "filesystem" },
-        { src: "/(.*)", dest: "/index.html" },
-      ],
-    })
-  );
 }
 
 buildAll().catch((err) => {
