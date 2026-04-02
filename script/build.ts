@@ -71,43 +71,15 @@ async function buildAll() {
     entryPoints: ["api/index.ts"],
     platform: "node",
     bundle: true,
-    format: "cjs",
-    outfile: `${funcDir}/handler.js`,
+    format: "esm",
+    outfile: `${funcDir}/index.mjs`,
     external: ["pg-native"], // optional native module, pg falls back gracefully
+    banner: {
+      // createRequire shim so any residual CJS patterns (pg-native try/catch) work
+      js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
+    },
     logLevel: "info",
   });
-
-  // Diagnostic wrapper — catches and logs the full error if handler.js fails to load
-  await writeFile(
-    `${funcDir}/index.js`,
-    `"use strict";
-var handler, loadError;
-try {
-  handler = require("./handler.js");
-} catch (e) {
-  loadError = e;
-  console.error("HANDLER_LOAD_ERROR", JSON.stringify({
-    code: e.code,
-    message: e.message,
-    stack: (e.stack || "").slice(0, 2000)
-  }));
-}
-if (loadError) {
-  module.exports = function(req, res) {
-    res.writeHead(500, { "content-type": "application/json" });
-    res.end(JSON.stringify({ code: loadError.code, message: loadError.message }));
-  };
-} else {
-  module.exports = handler.default || handler;
-}
-`
-  );
-
-  // Force CJS resolution (package.json root has "type": "module")
-  await writeFile(
-    `${funcDir}/package.json`,
-    JSON.stringify({ type: "commonjs" })
-  );
 
   // Include attached_assets so seedDatabase() can read the markdown file
   await cp("attached_assets", `${funcDir}/attached_assets`, { recursive: true });
@@ -116,8 +88,7 @@ if (loadError) {
     `${funcDir}/.vc-config.json`,
     JSON.stringify({
       runtime: "nodejs22.x",
-      handler: "index.js",
-      launcherType: "Nodejs",
+      handler: "index.mjs",
     })
   );
 
