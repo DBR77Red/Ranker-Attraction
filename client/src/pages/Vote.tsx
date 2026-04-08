@@ -2,16 +2,24 @@ import { useMatchup } from "@/hooks/use-attractions";
 import { useVote } from "@/hooks/use-votes";
 import { RecentMatches } from "@/components/RecentMatches";
 import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Users, Loader2 } from "lucide-react";
+import { MapPin, Users, Loader2, SkipForward } from "lucide-react";
 import confetti from "canvas-confetti";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@shared/routes";
 
 export default function Vote() {
   const { data: matchup, isLoading, isError } = useMatchup();
   const voteMutation = useVote();
-  
+  const queryClient = useQueryClient();
+
   // Track which card was clicked to animate it differently
   const [clickedId, setClickedId] = useState<number | null>(null);
+
+  const handleSkip = () => {
+    if (voteMutation.isPending) return;
+    queryClient.invalidateQueries({ queryKey: [api.attractions.matchup.path] });
+  };
 
   const handleVote = (winnerId: number, loserId: number, e: React.MouseEvent) => {
     if (voteMutation.isPending) return;
@@ -154,6 +162,25 @@ export default function Vote() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Skip Button */}
+          {!isLoading && !isError && matchup && matchup.length >= 2 && (
+            <button
+              onClick={handleSkip}
+              disabled={voteMutation.isPending}
+              className="
+                mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-full
+                bg-white/5 border border-white/10 text-white/60
+                hover:bg-white/10 hover:text-white hover:border-white/20
+                active:scale-[0.97] transition-all duration-300
+                disabled:opacity-50 disabled:cursor-not-allowed
+                font-medium text-sm
+              "
+            >
+              <SkipForward className="w-4 h-4" />
+              Skip this matchup
+            </button>
+          )}
         </div>
 
         {/* Side Panel: Recent Matches */}
