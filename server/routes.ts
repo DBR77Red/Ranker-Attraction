@@ -77,8 +77,9 @@ export async function registerRoutes(
     }
   });
 
-  // Seed the database after API setup
-  seedDatabase().catch(console.error);
+  // Seed the database before serving — must await so serverless functions
+  // don't terminate before seeding completes.
+  await seedDatabase();
 
   return httpServer;
 }

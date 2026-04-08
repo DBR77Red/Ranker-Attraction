@@ -14,13 +14,22 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 
 const httpServer = createServer(app);
-registerRoutes(httpServer, app).catch(console.error);
 
-app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
-  const status = err.status || err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  if (res.headersSent) return next(err);
-  res.status(status).json({ message });
+// Must await registerRoutes (which includes seeding) before exporting,
+// so the serverless function is fully initialized on first request.
+const ready = registerRoutes(httpServer, app).then(() => {
+  app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    if (res.headersSent) return next(err);
+    res.status(status).json({ message });
+  });
 });
 
-export default app;
+// Wrapper that waits for initialization before handling requests
+const handler = async (req: Request, res: Response) => {
+  await ready;
+  app(req, res);
+};
+
+export default handler;
