@@ -1,6 +1,23 @@
-import { build as esbuild } from "esbuild";
+import { build as esbuild, type Plugin } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { rm, readFile, writeFile, mkdir } from "fs/promises";
+
+// Stub pg-native so esbuild inlines a no-op instead of leaving an external require.
+// pg's lazy getter catches MODULE_NOT_FOUND, but the external require can fail
+// differently in Vercel's ESM Lambda runtime (ERR_MODULE_NOT_FOUND).
+const pgNativeStub: Plugin = {
+  name: "pg-native-stub",
+  setup(build) {
+    build.onResolve({ filter: /^pg-native$/ }, () => ({
+      path: "pg-native",
+      namespace: "pg-native-stub",
+    }));
+    build.onLoad({ filter: /.*/, namespace: "pg-native-stub" }, () => ({
+      contents: "export default null;",
+      loader: "js",
+    }));
+  },
+};
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -61,20 +78,18 @@ async function buildAll() {
   });
 
   console.log("building vercel function...");
-  // Bundle server/api.ts → api/index.js with ALL deps inlined.
-  // Vercel's @vercel/node builder picks up api/index.js as a serverless function.
-  // Since everything is inlined, nft tracing has nothing external to resolve.
-  // Must use ESM format because package.json has "type": "module".
+  // Bundle server/api.ts → api/index.js as CJS with ALL deps inlined.
+  // A local api/package.json with "type":"commonjs" overrides the root ESM setting,
+  // so @vercel/node loads the function as CJS — no ESM launcher issues.
+  await mkdir("api", { recursive: true });
+  await writeFile("api/package.json", JSON.stringify({ type: "commonjs" }));
   await esbuild({
     entryPoints: ["server/api.ts"],
     platform: "node",
     bundle: true,
-    format: "esm",
+    format: "cjs",
     outfile: "api/index.js",
-    external: ["pg-native"],
-    banner: {
-      js: 'import { createRequire } from "module"; const require = createRequire(import.meta.url);',
-    },
+    plugins: [pgNativeStub],
     logLevel: "info",
   });
 }

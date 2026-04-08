@@ -3,17 +3,16 @@ import type { Server } from "http";
 import { storage } from "./storage";
 import { api } from "../shared/routes";
 import { z } from "zod";
-import fs from "fs";
-import path from "path";
+import { seedAttractions } from "./seed-data";
 
 function calculateElo(winnerElo: number, loserElo: number) {
   const K = 32;
   const expectedWinner = 1 / (1 + Math.pow(10, (loserElo - winnerElo) / 400));
   const expectedLoser = 1 / (1 + Math.pow(10, (winnerElo - loserElo) / 400));
-  
+
   const winnerDelta = Math.round(K * (1 - expectedWinner));
   const loserDelta = Math.round(K * (0 - expectedLoser));
-  
+
   return { winnerDelta, loserDelta };
 }
 
@@ -22,50 +21,10 @@ async function seedDatabase() {
   if (existing.length > 0) return;
 
   try {
-    const mdPath = path.resolve(process.cwd(), "attached_assets/content-1772188282515.md");
-    if (fs.existsSync(mdPath)) {
-      const content = fs.readFileSync(mdPath, "utf-8");
-      const sections = content.split(/\n## /).filter(s => s.trim().length > 0);
-      
-      for (const section of sections) {
-        const headerMatch = section.match(/(\d+\\\.\s+)?(.*?)\s+\((.*?)\)/);
-        if (!headerMatch) continue;
-        
-        const fullTitle = headerMatch[2].trim();
-        const visitorCount = headerMatch[3].trim();
-        
-        let name = fullTitle;
-        let location = "Unknown";
-        if (fullTitle.includes(',')) {
-          const parts = fullTitle.split(',');
-          name = parts[0].trim();
-          location = parts.slice(1).join(',').trim();
-        }
-        
-        const imgMatch = section.match(/!\[.*?\]\((.*?)\)/);
-        const imageUrl = imgMatch ? imgMatch[1] : "";
-        if (!imageUrl) continue;
-        
-        const textParts = section.split(/!\[.*?\]\(.*?\)/);
-        let description = textParts.length > 1 ? textParts[1].trim() : "No description available.";
-        // Clean up text
-        description = description.replace(/\[SEE ALSO.*?\]\(.*?\)/gi, '').replace(/\n+/g, ' ').trim();
-        if (description.length > 500) {
-          description = description.substring(0, 497) + '...';
-        }
-        
-        await storage.createAttraction({
-          name,
-          location,
-          visitorCount,
-          imageUrl,
-          description,
-          eloScore: 1200,
-          matchesPlayed: 0
-        });
-      }
-      console.log("Database seeded successfully with attractions.");
+    for (const attraction of seedAttractions) {
+      await storage.createAttraction(attraction);
     }
+    console.log("Database seeded successfully with attractions.");
   } catch (e) {
     console.error("Error seeding DB:", e);
   }
