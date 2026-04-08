@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Globe, Trophy, Swords } from "lucide-react";
+import { Globe, Trophy, Swords, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function Navigation() {
@@ -8,6 +8,7 @@ export function Navigation() {
   const links = [
     { href: "/", label: "Vote", icon: Swords },
     { href: "/leaderboard", label: "Leaderboard", icon: Trophy },
+    { href: "/visualplaybook", label: "Playbook", icon: Sparkles },
   ];
 
   return (

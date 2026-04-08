@@ -40,7 +40,7 @@ export default function Leaderboard() {
         <p className="text-xs sm:text-sm text-white/40 mt-2">Made by Daniel Camelo</p>
       </div>
       {/* Controls */}
-      <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center bg-card p-4 rounded-3xl border border-white/5 shadow-xl">
+      <div className="mb-8 flex flex-col sm:flex-row gap-4 justify-between items-center glass-panel p-4 rounded-3xl">
         <div className="relative w-full sm:max-w-xs">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
           <input 
@@ -79,7 +79,7 @@ export default function Leaderboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 className={`
-                  relative overflow-hidden group flex items-center gap-4 sm:gap-6 p-4 sm:p-5 rounded-3xl
+                  relative overflow-hidden group flex items-center gap-4 sm:gap-6 p-4 sm:p-5 rounded-3xl cursor-pointer
                   glass-panel-hover ${style.bg} ${style.border} border
                 `}
               >
