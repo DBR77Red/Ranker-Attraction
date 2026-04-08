@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "./components/Layout";
 import Vote from "./pages/Vote";
 import Leaderboard from "./pages/Leaderboard";
+import VisualPlaybook from "./pages/VisualPlaybook";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -14,6 +15,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Vote} />
         <Route path="/leaderboard" component={Leaderboard} />
+        <Route path="/visualplaybook" component={VisualPlaybook} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
